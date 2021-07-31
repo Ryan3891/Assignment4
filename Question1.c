@@ -2,6 +2,7 @@
  -------------------------------------
  File:    Question1.c
  Project: A04
+ Github Repository: https://github.com/Ryan3891/Assignment4
  -------------------------------------
  Author:  Ryan Campbell
  ID:      181881620
@@ -24,7 +25,6 @@ typedef struct thread //represents a single customer
 
 void displayStatus(int resourceCount,int customerCount);
 void displayArray(int *display, int rows, int columns);
-
 void requestResources(int custId, int resourceCount, int customerCount, int *reqRes);
 void releaseResources(int custId, int resourceCount, int *relRes);
 void runThreads(int customerCount, Thread *threads);
@@ -298,6 +298,14 @@ int isStateSafe(int resourceCount, int customerCount)
 
 
 void releaseResources(int custId, int resourceCount, int *relRes){
+	//check if this customer actually holds the resources that were requested to be released
+	for(int x=0;x!=resourceCount;x++){
+		if(relRes[x]> allocation[custId * resourceCount + x]){
+			printf("Error: this customer does not have those resources allocated so cannot release them, try again\n");
+			return;
+		}
+	}
+	
 	for(int x=0;x!=resourceCount;x++)
 	{
 		allocation[custId * resourceCount + x] -=  relRes[x];
